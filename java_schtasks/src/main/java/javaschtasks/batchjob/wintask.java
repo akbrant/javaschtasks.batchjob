@@ -106,10 +106,7 @@ public class wintask {
 		commands.add("/TN");
 		commands.add("FOLDERJOBS\\" + taskname);
 		commands.add("/F");
-		commands.add("/RU");
-		commands.add(JobSubmitGui.defaultservername + "\\" + JobSubmitGui.defaultuser);
-		commands.add("/RP");
-		commands.add(JobSubmitGui.defaultpass);
+		
 		
 		logger.debug("Running shell command: " + commands);
 		ProcessBuilder builder = new ProcessBuilder(commands);
