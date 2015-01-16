@@ -10,30 +10,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import org.apache.log4j.Logger;
 import org.controlsfx.dialog.Dialogs;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,6 +34,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -96,6 +85,7 @@ public class JobSubmitGui extends Application implements Initializable{
 	@FXML	private Button setFolderbutt;
 	@FXML	private TextField statusField;
 
+	@FXML	private ProgressBar possbar;
 	
 	private void populatetaskTable(List<Taskobj>  tasks ) {			
 		
@@ -195,7 +185,36 @@ public class JobSubmitGui extends Application implements Initializable{
 			logger.error(e);
 			return;
 		}
-		statusField.setText("Job Folder set to: " +  this.defaultfolder);
+		teskdesc.setText("Job Folder set to: " +  this.defaultfolder);
+		
+	
+	     IteratingTask task = new IteratingTask(8000);
+	     
+	     possbar.progressProperty().bind(task.progressProperty());
+	     //to change text
+	     //teskdesc.textProperty().bind(task.messageProperty());
+	     teskdesc.textProperty().addListener(new ChangeListener(){
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+				// TODO Auto-generated method stub
+				 System.out.println(" has changed!");
+			}	    	 
+	     });
+	     
+	     task.messageProperty().addListener(new ChangeListener(){
+
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+				SimpleStringProperty ii = (SimpleStringProperty) arg0;
+				teskdesc.appendText(ii.getValue() + "\n");
+				System.out.println(" has changed! " + ii.getValue() + " " + ii.getName());
+				
+			}
+	    	 
+	     });
+	     Thread th = new Thread(task);
+         th.setDaemon(true);
+         th.start();
 		
 		//initializeAccelerators();
 	}
