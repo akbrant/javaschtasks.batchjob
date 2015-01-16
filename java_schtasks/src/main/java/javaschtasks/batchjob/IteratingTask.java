@@ -16,11 +16,13 @@ public class IteratingTask extends Task<Integer> {
                 updateMessage("Cancelled");
                 break;
             }
-            updateMessage("Iteration " + iterations);
+            //updateMessage("Iteration " + iterations);
             updateProgress(iterations, totalIterations);
-            System.out.println("Iteration " + iterations);
+            //System.out.println("Iteration " + iterations);
             
         }
+        StringBuffer returncodes = wintask.linuxfortune(null);
+        updateMessage(returncodes.toString());
         return iterations;
     }
 }

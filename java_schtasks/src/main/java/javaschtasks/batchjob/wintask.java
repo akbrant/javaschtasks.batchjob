@@ -124,6 +124,30 @@ public class wintask {
 		
 	}
 	
+	public static StringBuffer linuxfortune(Taskobj task) {
+		List<String> commands = new ArrayList<String>();
+		commands.add("/bin/bash");
+		commands.add("-c");
+		commands.add("sleep 5");
+		commands.add(";");
+		commands.add("fortune");
+		
+		logger.debug("Running shell command: " + commands);
+		ProcessBuilder builder = new ProcessBuilder(commands);
+		Process p;
+		try {
+			p = builder.start();
+			StringBuffer sb = wintask.stoutErrors(p);
+			p.waitFor();
+			System.out.println(p.exitValue());
+			return sb;
+		} catch (IOException | InterruptedException e) {			
+			e.printStackTrace();
+		} 
+		return null;
+		
+	}
+	
 	public static StringBuffer runataskl(Taskobj task) {
 	
 		List<String> commands = new ArrayList<String>();

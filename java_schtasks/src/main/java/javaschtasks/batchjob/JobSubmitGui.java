@@ -105,8 +105,36 @@ public class JobSubmitGui extends Application implements Initializable{
 		tasktable.getColumns().setAll(taskname, taskuserid, taskArgs) ;
 	}
 	
-
-	
+	@FXML
+	void newfortune(ActionEvent event){
+		IteratingTask task = new IteratingTask(8000);
+	     
+	     possbar.progressProperty().bind(task.progressProperty());
+	     //to change text
+	     //teskdesc.textProperty().bind(task.messageProperty());
+	     teskdesc.textProperty().addListener(new ChangeListener(){
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+				// TODO Auto-generated method stub
+				 System.out.println(" has changed!");
+			}	    	 
+	     });
+	     
+	     task.messageProperty().addListener(new ChangeListener(){
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+				SimpleStringProperty ii = (SimpleStringProperty) arg0;
+				teskdesc.setText(ii.getValue() + "\n");
+				System.out.println( ii.getValue() + " " + ii.getName());
+				
+			}
+	    	 
+	     });
+	     Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
+		
+	}
 	
 	@FXML
 	void openfoldercho(ActionEvent event) {
@@ -188,34 +216,7 @@ public class JobSubmitGui extends Application implements Initializable{
 		teskdesc.setText("Job Folder set to: " +  this.defaultfolder);
 		
 	
-	     IteratingTask task = new IteratingTask(8000);
 	     
-	     possbar.progressProperty().bind(task.progressProperty());
-	     //to change text
-	     //teskdesc.textProperty().bind(task.messageProperty());
-	     teskdesc.textProperty().addListener(new ChangeListener(){
-			@Override
-			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-				// TODO Auto-generated method stub
-				 System.out.println(" has changed!");
-			}	    	 
-	     });
-	     
-	     task.messageProperty().addListener(new ChangeListener(){
-
-			@Override
-			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-				SimpleStringProperty ii = (SimpleStringProperty) arg0;
-				teskdesc.appendText(ii.getValue() + "\n");
-				System.out.println(" has changed! " + ii.getValue() + " " + ii.getName());
-				
-			}
-	    	 
-	     });
-	     Thread th = new Thread(task);
-         th.setDaemon(true);
-         th.start();
-		
 		//initializeAccelerators();
 	}
 
