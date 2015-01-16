@@ -66,7 +66,8 @@ public class JobSubmitGui extends Application implements Initializable{
 	
 	private String defaultfolder = "C:\\Users\\user\\git\\sasbatch\\sampleFiles";
 	public static String defaultuser = "auser";
-	public static String defaultserver = "xxx.xxx.xxx.xxx";
+	public static String defaultserverip = "xxx.xxx.xxx.xxx";
+	public static String defaultservername = "servermachinename";
 	public static String defaultpass = "auserpass";
 
 	
@@ -374,7 +375,8 @@ public class JobSubmitGui extends Application implements Initializable{
 		defaultfolder = prop.getProperty("defaultfolder");
  
 		defaultuser = prop.getProperty("defaultuser");
-		defaultserver = prop.getProperty("defaultserver");
+		defaultserverip = prop.getProperty("defaultserverip");
+		defaultservername = prop.getProperty("defaultservername");
 		defaultpass = prop.getProperty("defaultpass");
 		
 			
@@ -393,7 +395,8 @@ public class JobSubmitGui extends Application implements Initializable{
 			// set the properties value
 			prop.setProperty("defaultfolder", this.defaultfolder);
 			prop.setProperty("defaultuser", this.defaultuser);
-			prop.setProperty("defaultserver", this.defaultserver);
+			prop.setProperty("defaultserverip", this.defaultserverip);
+			prop.setProperty("defaultservername", this.defaultservername);
 			prop.setProperty("defaultpass", this.defaultpass);
 			
 			// save properties to project root folder

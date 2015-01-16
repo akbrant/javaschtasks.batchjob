@@ -67,7 +67,7 @@ public class wintask {
 				commands.add("schtasks.exe");
 				commands.add("/run");
 				commands.add("/S");
-				commands.add(JobSubmitGui.defaultserver);
+				commands.add(JobSubmitGui.defaultserverip);
 				commands.add("/U");
 				commands.add(JobSubmitGui.defaultuser);
 				commands.add("/P");
@@ -98,7 +98,7 @@ public class wintask {
 		commands.add("schtasks.exe");
 		commands.add("/delete");
 		commands.add("/S");
-		commands.add(JobSubmitGui.defaultserver);
+		commands.add(JobSubmitGui.defaultserverip);
 		commands.add("/U");
 		commands.add(JobSubmitGui.defaultuser);
 		commands.add("/P");
@@ -106,6 +106,10 @@ public class wintask {
 		commands.add("/TN");
 		commands.add("FOLDERJOBS\\" + taskname);
 		commands.add("/F");
+		commands.add("/RU");
+		commands.add(JobSubmitGui.defaultservername + "\\" + JobSubmitGui.defaultuser);
+		commands.add("/RP");
+		commands.add(JobSubmitGui.defaultpass);
 		
 		logger.debug("Running shell command: " + commands);
 		ProcessBuilder builder = new ProcessBuilder(commands);
@@ -130,7 +134,7 @@ public class wintask {
 		commands.add("schtasks.exe");
 		commands.add("/Create");
 		commands.add("/S");
-		commands.add(JobSubmitGui.defaultserver);
+		commands.add(JobSubmitGui.defaultserverip);
 		commands.add("/U");
 		commands.add(JobSubmitGui.defaultuser);
 		commands.add("/P");
@@ -140,6 +144,11 @@ public class wintask {
 		commands.add("/TN");
 		commands.add("FOLDERJOBS\\" + taskname);
 		commands.add("/F");
+		commands.add("/RU");
+		commands.add(JobSubmitGui.defaultservername + "\\" + JobSubmitGui.defaultuser);
+		commands.add("/RP");
+		commands.add(JobSubmitGui.defaultpass);
+		
 		
 		logger.debug("Running shell command: " + commands);
 		ProcessBuilder builder = new ProcessBuilder(commands);
@@ -176,7 +185,7 @@ public class wintask {
 		commands.add("schtasks.exe");
 		commands.add("/query");
 		commands.add("/S");
-		commands.add(JobSubmitGui.defaultserver);
+		commands.add(JobSubmitGui.defaultserverip);
 		commands.add("/U");
 		commands.add(JobSubmitGui.defaultuser);
 		commands.add("/P");
