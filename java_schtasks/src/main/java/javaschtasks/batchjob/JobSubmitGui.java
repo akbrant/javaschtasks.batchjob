@@ -65,6 +65,11 @@ public class JobSubmitGui extends Application implements Initializable{
 	
 	
 	private String defaultfolder = "C:\\Users\\user\\git\\sasbatch\\sampleFiles";
+	public static String defaultuser = "auser";
+	public static String defaultserver = "xxx.xxx.xxx.xxx";
+	public static String defaultpass = "auserpass";
+
+	
 	private Stage primaryStage;
 	private Desktop desktop = Desktop.getDesktop();
 
@@ -148,7 +153,7 @@ public class JobSubmitGui extends Application implements Initializable{
 	void handleScan(ActionEvent event) throws Exception {
 		File testfolder = new File(defaultfolder);
 		if (!testfolder.exists()){
-			throw new Exception("Folder does not exisit, please set new XML task folder. ");
+			throw new Exception(this.defaultfolder + " Folder does not exisit, please set new XML task folder. ");
 		}			
 		List<File> allfiles = ReadXMLFile.listFilesForFolder(new File(defaultfolder));
 		List<File> goodxmljobs = new ArrayList<File>();
@@ -178,7 +183,7 @@ public class JobSubmitGui extends Application implements Initializable{
 		setuprowChanges();
 		
 		try {
-			defaultfolder = getPropValues();
+			getPropValues();
 			handleScan(null);
 		} catch (IOException e) {
 			statusField.setText(e.getLocalizedMessage());
@@ -351,7 +356,7 @@ public class JobSubmitGui extends Application implements Initializable{
 	}
 
 	
-	public String getPropValues() throws IOException {
+	public void getPropValues() throws IOException {
 		 
 		String result = "";
 		Properties prop = new Properties();
@@ -366,11 +371,15 @@ public class JobSubmitGui extends Application implements Initializable{
 		}
  
 		// get the property value and print it out
-		String folder = prop.getProperty("defaultfolder");
+		defaultfolder = prop.getProperty("defaultfolder");
  
-		result = folder;
-		logger.debug("default folder from prob file: " + folder);
-		return result;
+		defaultuser = prop.getProperty("defaultuser");
+		defaultserver = prop.getProperty("defaultserver");
+		defaultpass = prop.getProperty("defaultpass");
+		
+			
+		
+		logger.debug("default folder from prob file: " + defaultfolder);
 	}
 	
 	public void setProValues(){
