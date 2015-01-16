@@ -96,6 +96,7 @@ public class wintask {
 
 		String taskname = wintask.getGoodTaskName(task);
 		commands.add("schtasks.exe");
+		commands.add("/delete");
 		commands.add("/S");
 		commands.add(JobSubmitGui.defaultserver);
 		commands.add("/U");
