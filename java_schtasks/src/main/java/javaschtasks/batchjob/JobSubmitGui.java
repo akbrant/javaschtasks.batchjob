@@ -392,6 +392,9 @@ public class JobSubmitGui extends Application implements Initializable{
 	 
 			// set the properties value
 			prop.setProperty("defaultfolder", this.defaultfolder);
+			prop.setProperty("defaultuser", this.defaultfolder);
+			prop.setProperty("defaultserver", this.defaultfolder);
+			prop.setProperty("defaultpass", this.defaultfolder);
 			
 			// save properties to project root folder
 			prop.store(output, null);
