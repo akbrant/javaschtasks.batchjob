@@ -15,25 +15,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import org.apache.log4j.Logger;
 import org.controlsfx.dialog.Dialogs;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,6 +35,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -94,7 +84,7 @@ public class JobSubmitGui extends Application implements Initializable{
 	@FXML	private TabPane tabpane;
 	@FXML	private Tab ppltab;
 	@FXML	private Button setFolderbutt;
-	@FXML	private TextField statusField;
+	@FXML	private TextArea statusField;
 
 	
 	private void populatetaskTable(List<Taskobj>  tasks ) {			
@@ -114,8 +104,6 @@ public class JobSubmitGui extends Application implements Initializable{
 	
 		tasktable.getColumns().setAll(taskname, taskuserid, taskArgs) ;
 	}
-	
-
 	
 	
 	@FXML
@@ -195,8 +183,10 @@ public class JobSubmitGui extends Application implements Initializable{
 			logger.error(e);
 			return;
 		}
-		statusField.setText("Job Folder set to: " +  this.defaultfolder);
+		teskdesc.setText("Job Folder set to: " +  this.defaultfolder);
 		
+	
+	     
 		//initializeAccelerators();
 	}
 
@@ -214,22 +204,61 @@ public class JobSubmitGui extends Application implements Initializable{
 		});
 
 		final MenuItem addViewPdf = new MenuItem("Run");
+		
+		
 		menu.getItems().add(addViewPdf);
 		addViewPdf.setOnAction(new EventHandler<ActionEvent>() {
 			
 			public void handle(ActionEvent event) {
-				Taskobj task = tasktable.getSelectionModel().getSelectedItem();
+				final Taskobj task = tasktable.getSelectionModel().getSelectedItem();
 				
-				//dame lovely'
-				//run the shit here 
-				wintask.runataskl(task);
-				wintask.deltask1(task);
 				
-				//DecisionsApp.this.logger.debug(com.getApplicantname() + com.getPdffilename());
-				//PopupActionsJavaFx.LanchPdfreader(com, DecisionsApp.this);
+
+				IteratingTask runatask = new IteratingTask(task, "run");
+				statusField.appendText(new Date() + " running:  " + task.getFilename() + "\n");
+				
+				runatask.messageProperty().addListener(new ChangeListener(){
+					@Override
+					public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+						SimpleStringProperty ii = (SimpleStringProperty) arg0;
+						File ranfile = new File(task.Filename);
+						statusField.appendText(new Date() + " " + ranfile.getName() + ": "+  ii.getValue() + "\n");
+						logger.debug( ii.getValue() + ": " + ii.getName());
+						
+						//After we get message from task created, remove delete the task 
+						IteratingTask delatask = new IteratingTask(task, "del");
+
+						delatask.messageProperty().addListener(new ChangeListener(){
+							@Override
+							public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+								SimpleStringProperty ii = (SimpleStringProperty) arg0;
+								File ranfile = new File(task.Filename);
+								statusField.appendText(new Date() + " " + ranfile.getName() + ": "+  ii.getValue() + "\n" );
+								logger.debug( ii.getValue() + ": " + ii.getName());
+
+							}
+
+						});
+						//the delete task command
+						Thread th2 = new Thread(delatask);
+						th2.setDaemon(true);
+						th2.start();
+
+						
+					}
+
+				});
+				//create task command
+				Thread th = new Thread(runatask);
+				th.setDaemon(true);
+				th.start();
+
+
+				
+		
 			}
 		});
-		
+
 
 		final MenuItem addEditItem = new MenuItem("Edit");
 		menu.getItems().add(addEditItem);
