@@ -85,7 +85,6 @@ public class JobSubmitGui extends Application implements Initializable{
 	@FXML	private Button setFolderbutt;
 	@FXML	private TextField statusField;
 
-	@FXML	private ProgressBar possbar;
 	
 	private void populatetaskTable(List<Taskobj>  tasks ) {			
 		
@@ -105,36 +104,6 @@ public class JobSubmitGui extends Application implements Initializable{
 		tasktable.getColumns().setAll(taskname, taskuserid, taskArgs) ;
 	}
 	
-	@FXML
-	void newfortune(ActionEvent event){
-		IteratingTask task = new IteratingTask(new Taskobj());
-	     
-	     possbar.progressProperty().bind(task.progressProperty());
-	     //to change text
-	     //teskdesc.textProperty().bind(task.messageProperty());
-	     teskdesc.textProperty().addListener(new ChangeListener(){
-			@Override
-			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-				// TODO Auto-generated method stub
-				 System.out.println(" has changed!");
-			}	    	 
-	     });
-	     
-	     task.messageProperty().addListener(new ChangeListener(){
-			@Override
-			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-				SimpleStringProperty ii = (SimpleStringProperty) arg0;
-				teskdesc.setText(ii.getValue() + "\n");
-				System.out.println( ii.getValue() + " " + ii.getName());
-				
-			}
-	    	 
-	     });
-	     Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
-		
-	}
 	
 	@FXML
 	void openfoldercho(ActionEvent event) {
@@ -239,44 +208,52 @@ public class JobSubmitGui extends Application implements Initializable{
 			
 			public void handle(ActionEvent event) {
 				final Taskobj task = tasktable.getSelectionModel().getSelectedItem();
+
+
+				IteratingTask runatask = new IteratingTask(task, "run");
+
+				runatask.messageProperty().addListener(new ChangeListener(){
+					@Override
+					public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+						SimpleStringProperty ii = (SimpleStringProperty) arg0;
+						File ranfile = new File(task.Filename);
+						statusField.setText(ranfile.getName() + ": "+  ii.getValue());
+						logger.debug( ii.getValue() + ": " + ii.getName());
+						
+						//After we get message from task created, remove delete the task 
+						IteratingTask delatask = new IteratingTask(task, "del");
+
+						delatask.messageProperty().addListener(new ChangeListener(){
+							@Override
+							public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+								SimpleStringProperty ii = (SimpleStringProperty) arg0;
+								File ranfile = new File(task.Filename);
+								statusField.appendText(ranfile.getName() + ": "+  ii.getValue());
+								logger.debug( ii.getValue() + ": " + ii.getName());
+
+							}
+
+						});
+						//the delete task command
+						Thread th2 = new Thread(delatask);
+						th2.setDaemon(true);
+						th2.start();
+
+						
+					}
+
+				});
+				//create task command
+				Thread th = new Thread(runatask);
+				th.setDaemon(true);
+				th.start();
+
+
 				
-				
-				IteratingTask ittask = new IteratingTask(task);
-				   possbar.progressProperty().bind(ittask.progressProperty());
-				     //to change text
-				     //teskdesc.textProperty().bind(task.messageProperty());
-				     teskdesc.textProperty().addListener(new ChangeListener(){
-						@Override
-						public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-							logger.debug(" has changed!");
-						}	    	 
-				     });
-				     
-				     ittask.messageProperty().addListener(new ChangeListener(){
-						@Override
-						public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-							SimpleStringProperty ii = (SimpleStringProperty) arg0;
-							File ranfile = new File(task.Filename);
-							statusField.setText(ranfile.getName() + ": "+  ii.getValue());
-							logger.debug( ii.getValue() + ": " + ii.getName());
-							
-						}
-				    	 
-				     });
-				    Thread th = new Thread(ittask);
-			        th.setDaemon(true);
-			        th.start();
-				
-				//dame lovely'
-				//run the shit here 
-				//wintask.runataskl(task);
-				//wintask.deltask1(task);
-				
-				//DecisionsApp.this.logger.debug(com.getApplicantname() + com.getPdffilename());
-				//PopupActionsJavaFx.LanchPdfreader(com, DecisionsApp.this);
+		
 			}
 		});
-		
+
 
 		final MenuItem addEditItem = new MenuItem("Edit");
 		menu.getItems().add(addEditItem);
