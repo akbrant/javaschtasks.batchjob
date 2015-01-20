@@ -107,7 +107,7 @@ public class JobSubmitGui extends Application implements Initializable{
 	
 	@FXML
 	void newfortune(ActionEvent event){
-		IteratingTask task = new IteratingTask(8000);
+		IteratingTask task = new IteratingTask(new Taskobj());
 	     
 	     possbar.progressProperty().bind(task.progressProperty());
 	     //to change text
@@ -238,12 +238,39 @@ public class JobSubmitGui extends Application implements Initializable{
 		addViewPdf.setOnAction(new EventHandler<ActionEvent>() {
 			
 			public void handle(ActionEvent event) {
-				Taskobj task = tasktable.getSelectionModel().getSelectedItem();
+				final Taskobj task = tasktable.getSelectionModel().getSelectedItem();
+				
+				
+				IteratingTask ittask = new IteratingTask(task);
+				   possbar.progressProperty().bind(ittask.progressProperty());
+				     //to change text
+				     //teskdesc.textProperty().bind(task.messageProperty());
+				     teskdesc.textProperty().addListener(new ChangeListener(){
+						@Override
+						public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+							logger.debug(" has changed!");
+						}	    	 
+				     });
+				     
+				     ittask.messageProperty().addListener(new ChangeListener(){
+						@Override
+						public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+							SimpleStringProperty ii = (SimpleStringProperty) arg0;
+							File ranfile = new File(task.Filename);
+							statusField.setText(ranfile.getName() + ": "+  ii.getValue());
+							logger.debug( ii.getValue() + ": " + ii.getName());
+							
+						}
+				    	 
+				     });
+				    Thread th = new Thread(ittask);
+			        th.setDaemon(true);
+			        th.start();
 				
 				//dame lovely'
 				//run the shit here 
-				wintask.runataskl(task);
-				wintask.deltask1(task);
+				//wintask.runataskl(task);
+				//wintask.deltask1(task);
 				
 				//DecisionsApp.this.logger.debug(com.getApplicantname() + com.getPdffilename());
 				//PopupActionsJavaFx.LanchPdfreader(com, DecisionsApp.this);

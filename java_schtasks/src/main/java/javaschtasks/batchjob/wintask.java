@@ -37,7 +37,7 @@ public class wintask {
 			br = new BufferedReader(isr);
 			String line;
 			while ((line = br.readLine()) != null) {
-				//System.out.println(line);
+				logger.debug(line);
 				ret.append(line);
 			}
 			//stderr
@@ -45,7 +45,8 @@ public class wintask {
 			isr = new InputStreamReader(is);
 			br = new BufferedReader(isr);
 			while ((line = br.readLine()) != null) {
-				System.out.println(line);
+				logger.debug(line);
+				ret.append(line);
 			}
 			return ret;
 		} catch (IOException e) {
@@ -178,7 +179,7 @@ public class wintask {
 			p = builder.start();
 			StringBuffer sb = wintask.stoutErrors(p);
 			p.waitFor();
-			System.out.println(p.exitValue());
+			logger.debug(p.exitValue());
 			return sb;
 		} catch (IOException | InterruptedException e) {			
 			e.printStackTrace();

@@ -1,12 +1,17 @@
 package javaschtasks.batchjob;
 
+import org.apache.log4j.Logger;
+
 import javafx.concurrent.Task;
 
 public class IteratingTask extends Task<Integer> {
+	private static Logger logger = Logger.getLogger(JobSubmitGui.class.getName());
     private final int totalIterations;
-
-    public IteratingTask(int totalIterations) {
-        this.totalIterations = totalIterations;
+    private Taskobj atask = null;
+    
+    public IteratingTask(Taskobj task) { 
+    	this.atask = task;
+    	this.totalIterations = 3000;
     }
 
     @Override protected Integer call() throws Exception {
@@ -21,8 +26,9 @@ public class IteratingTask extends Task<Integer> {
             //System.out.println("Iteration " + iterations);
             
         }
-        StringBuffer returncodes = wintask.linuxfortune(null);
+        StringBuffer returncodes = wintask.runataskl(this.atask);
         updateMessage(returncodes.toString());
+        logger.debug("shell task returned: " + returncodes.toString());
         return iterations;
     }
 }
