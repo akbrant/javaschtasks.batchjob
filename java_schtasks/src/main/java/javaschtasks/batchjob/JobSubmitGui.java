@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -83,7 +84,7 @@ public class JobSubmitGui extends Application implements Initializable{
 	@FXML	private TabPane tabpane;
 	@FXML	private Tab ppltab;
 	@FXML	private Button setFolderbutt;
-	@FXML	private TextField statusField;
+	@FXML	private TextArea statusField;
 
 	
 	private void populatetaskTable(List<Taskobj>  tasks ) {			
@@ -203,21 +204,25 @@ public class JobSubmitGui extends Application implements Initializable{
 		});
 
 		final MenuItem addViewPdf = new MenuItem("Run");
+		
+		
 		menu.getItems().add(addViewPdf);
 		addViewPdf.setOnAction(new EventHandler<ActionEvent>() {
 			
 			public void handle(ActionEvent event) {
 				final Taskobj task = tasktable.getSelectionModel().getSelectedItem();
-
+				
+				
 
 				IteratingTask runatask = new IteratingTask(task, "run");
-
+				statusField.appendText(new Date() + " running:  " + task.getFilename() + "\n");
+				
 				runatask.messageProperty().addListener(new ChangeListener(){
 					@Override
 					public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 						SimpleStringProperty ii = (SimpleStringProperty) arg0;
 						File ranfile = new File(task.Filename);
-						statusField.setText(ranfile.getName() + ": "+  ii.getValue());
+						statusField.appendText(new Date() + " " + ranfile.getName() + ": "+  ii.getValue() + "\n");
 						logger.debug( ii.getValue() + ": " + ii.getName());
 						
 						//After we get message from task created, remove delete the task 
@@ -228,7 +233,7 @@ public class JobSubmitGui extends Application implements Initializable{
 							public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 								SimpleStringProperty ii = (SimpleStringProperty) arg0;
 								File ranfile = new File(task.Filename);
-								statusField.appendText(ranfile.getName() + ": "+  ii.getValue());
+								statusField.appendText(new Date() + " " + ranfile.getName() + ": "+  ii.getValue() + "\n" );
 								logger.debug( ii.getValue() + ": " + ii.getName());
 
 							}

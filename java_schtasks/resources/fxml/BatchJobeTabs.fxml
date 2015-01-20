@@ -6,12 +6,12 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="805.0" prefWidth="895.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaschtasks.batchjob.JobSubmitGui">
-<children><TabPane fx:id="tabpane" layoutX="11.0" layoutY="70.0" prefHeight="673.0" prefWidth="866.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="70.0">
+<children><TabPane fx:id="tabpane" layoutX="11.0" layoutY="70.0" prefHeight="643.0" prefWidth="866.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="92.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="70.0">
   <tabs>
     <Tab fx:id="ppltab" text="Jobs">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="575.0" prefWidth="866.0">
-<children><TextArea fx:id="teskdesc" layoutX="9.0" layoutY="436.0" prefHeight="205.0" prefWidth="850.0" promptText="Description" /><TableView fx:id="tasktable" layoutX="8.0" layoutY="14.0" prefHeight="417.0" prefWidth="851.0" AnchorPane.bottomAnchor="226.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="555.0" prefWidth="866.0">
+<children><TextArea fx:id="teskdesc" layoutX="9.0" layoutY="398.0" prefHeight="199.0" prefWidth="850.0" promptText="Description" /><TableView fx:id="tasktable" layoutX="8.0" layoutY="14.0" prefHeight="417.0" prefWidth="851.0" AnchorPane.bottomAnchor="226.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
   <columns>
     <TableColumn fx:id="taskname" prefWidth="336.0" text="Description" /><TableColumn fx:id="taskuserid" prefWidth="131.0" text="userID" /><TableColumn fx:id="taskArgs" minWidth="9.0" prefWidth="378.0" text="Arguments" />
   </columns>
@@ -24,6 +24,6 @@
             <Insets />
          </opaqueInsets>
 </TabPane><Button fx:id="setFolderbutt" layoutX="546.0" layoutY="23.0" mnemonicParsing="false" onAction="#openfoldercho" prefHeight="32.0" prefWidth="103.0" text="Set Folder" /><Button fx:id="Scanbut" layoutX="656.0" layoutY="23.0" mnemonicParsing="false" onAction="#handleScan" prefHeight="32.0" prefWidth="103.0" text="Scan" />
-      <TextField fx:id="statusField" alignment="CENTER" editable="false" layoutX="14.0" layoutY="766.0" prefHeight="31.0" prefWidth="850.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="760.0" />
+      <TextArea fx:id="statusField" layoutX="22.0" layoutY="721.0" prefHeight="73.0" prefWidth="848.0" promptText="Status" />
 </children>
 </AnchorPane>
