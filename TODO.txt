@@ -1,0 +1,2 @@
+would be nice to add better task handling so user can see whats happing, look like a start 
+http://docs.oracle.com/javafx/2/api/javafx/concurrent/Task.html
